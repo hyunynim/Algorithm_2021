@@ -5,8 +5,9 @@ int board[20];
 int n, ans;
 
 bool LocationCheck(int s, int x) {
-    for (int i = s - 1; i >= 0; --i) 
-        if (board[i] == x - i - 1 || board[i] == x + i + 1 || board[i] == x) return 0;
+    int left = x - 1, right = x + 1;
+    for (int i = s - 1; i >= 0; --i, --left, ++right) 
+        if (board[i] == left || board[i] == right || board[i] == x) return 0;
     return 1;
 }
 void go(int s) {
