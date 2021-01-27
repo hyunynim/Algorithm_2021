@@ -18,9 +18,9 @@ void RestoreBoard(int s) {
 }
 
 void LocationCheck(int x, int y) {
-    int dx[] = { 0, 1, 1, 1, 0 };
-    int dy[] = { -1, -1, 0, 1, 1 };
-    for (int i = 0; i < 5; ++i) {
+    int dx[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+    int dy[] = { -1, -1, 0, 1, 1, 1, 0, -1 };
+    for (int i = 0; i < 8; ++i) {
         int nx = x, ny = y;
         while (0 <= nx && nx < n && 0 <= ny && ny < n) {
             board[nx][ny] = 1;
