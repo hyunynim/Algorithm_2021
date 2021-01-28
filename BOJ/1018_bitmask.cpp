@@ -2,29 +2,25 @@
 using namespace std;
 int n, m;
 typedef long long ll;
-ll board[2][55];
+ll board[55];
 int CheckBoard(int x, int y) {
-	ll b = 0, w = 0;
-	for (int i = 0; i < 8; ++i) {
-		if (i % 2)
-			b |= (1LL << i);
-		else
-			w |= (1LL << i);
-	}
+	ll chk[2] = {0};
+
+	for (int i = 0; i < 8; ++i)
+			chk[i % 2] |= (1LL << i);
+
 	int res = 1e9;
 	for (int k = 0; k < 2; ++k) {
-		int sum = 0;
+		int cnt = 0;
 		for (int i = 0; i < 8; ++i) {
-			ll cur1 = (board[0][x + i] >> y)& b;
-			ll cur2 = (board[1][x + i] >> y)& w;
-			while (b) {
-
+			ll cur = ((board[x + i] >> y) & ((1LL << 8) - 1)) ^ chk[k];
+			while(cur){
+				++cnt;
+				cur -= (cur & (-cur));
 			}
+			chk[k] ^= (1LL << 8) - 1;
 		}
-
-		res = min(res, sum);
-		b ^= (1LL << m) - 1;
-		w ^= (1LL << m) - 1;
+		res = min(res, cnt);
 	}
 	return res;
 }
@@ -35,16 +31,14 @@ int main() {
 		scanf("%s", msg);
 		for (int j = 0; msg[j]; ++j) {
 			if (msg[j] == 'W')
-				board[0][i] |= (1LL << i);
-			else
-				board[1][i] |= (1LL << i);
+				board[i] |= (1LL << j);
 		}
 	}
 
 	int mm = 1e9;
 
-	for (int i = 0; i <= n - 8; ++i) {
-
-	}
+	for (int i = 0; i <= n - 8; ++i) 
+		for(int j = 0; j<= m - 8; ++j)
+			mm = min(mm, CheckBoard(i, j));
 	printf("%d", mm);
 }
