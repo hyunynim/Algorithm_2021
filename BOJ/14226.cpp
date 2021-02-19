@@ -17,7 +17,7 @@ int main() {
 			return 0;
 		}
 		int nx[] = { x, x + c, x - 1 };
-		int nc[] = { x, c, x };
+		int nc[] = { x, c, c };
 		for (int i = 0; i < 3; ++i) {
 			if (0 <= nx[i] && nx[i] < 2020 && 0 <= nc[i] && nc[i] < 2020 && chk[nx[i]][nc[i]] == 0) {
 				chk[nx[i]][nc[i]] = chk[x][c] + 1;
