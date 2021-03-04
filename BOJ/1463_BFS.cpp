@@ -1,17 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
-int d[1010101];
+int chk[1010101];
 int main(){
-    memset(d, -1, sizeof(d));
     int n; scanf("%d", &n);
-    d[0] = d[1] = 0;
-    for(int i = 2; i<=n; ++i){
-        d[i] = 1e9;
-        if(i % 2 == 0)
-            d[i] = min(d[i], d[i / 2] + 1);
-        if(i % 3 == 0)
-            d[i] = min(d[i], d[i / 3] + 1);
-        d[i] = min(d[i], d[i - 1] + 1);
+    queue<int> q;
+    q.push(n);
+    chk[n] = 1;
+    while(q.size()){
+        int cur = q.front(); q.pop();
+        if(cur == 1){
+            printf("%d", chk[cur] - 1);
+            return 0;
+        }
+        
+        vector<int> next;
+        if(cur % 3 == 0)
+            next.push_back(cur / 3);
+        if(cur % 2 == 0)
+            next.push_back(cur / 2);
+        next.push_back(cur - 1);
+        for(auto nx : next){
+            if(chk[nx] == 0){
+                chk[nx] = chk[cur] + 1;
+                q.push(nx);
+            }
+        }
     }
-    printf("%d", d[n]);
 }
