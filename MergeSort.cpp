@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-typedef long long ll;
 void merge(vector<int>& seq, int l, int r) {
     vector<int> tmp;
     int mid = (l + r) / 2;
