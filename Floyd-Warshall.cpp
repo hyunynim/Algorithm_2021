@@ -21,7 +21,7 @@ void InputAdjMatrix() {
 	for (int i = 1; i <= v; ++i) {
 		for (int j = 1; j <= v; ++j) {
 			scanf("%d", &adj[i][j]);
-			if(adj[i][j] == 0)
+			if(adj[i][j] == 0 && (i != j))
 				adj[i][j] = inf;
 		}
 	}
