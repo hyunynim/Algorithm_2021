@@ -18,8 +18,8 @@ void InputAdjList() {
 }
 void InputAdjMatrix() {
 	int v; scanf("%d", &v);
-	for (int i = 0; i < v; ++i) {
-		for (int j = 0; j < v; ++j) {
+	for (int i = 1; i <= v; ++i) {
+		for (int j = 1; j <= v; ++j) {
 			scanf("%d", &adj[i][j]);
 			if(adj[i][j] == 0)
 				adj[i][j] = inf;
