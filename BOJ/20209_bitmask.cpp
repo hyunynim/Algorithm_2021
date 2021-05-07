@@ -22,7 +22,6 @@ bool Check(int cube, int k) {
 int d[1 << 24];
 vector<int> adj[11];
 int main() {
-	Check(16777215, 8);
 	int n, k; scanf("%d %d", &n, &k);
 	int cube = 0;
 	for (int i = 0; i < n; ++i) {
