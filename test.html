@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>삥뽕빙고</title>
+</head>
+<style>
+  .tb {
+		transform: rotate(45deg);
+		position: absolute;
+	   left: 50%;
+	   top: 50%;
+		 margin-left: -250px;
+	   margin-top: -250px;
+  }
+	.st{
+		position: absolute;
+	   left: 50%;
+	   top: 30%;
+		 margin-left: -250px;
+	   margin-top: -250px;
+
+ }
+ .cs{
+	 display: flex;
+	    justify-content: center;
+	    align-items: center;
+ }
+
+</style>
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+	var end=0
+	var click=0
+  var count=1
+  var check = new Array(7);
+  for (var i=0;i<7;i++){
+    check[i]= new Array(7);
+  }
+  for (i=0;i<7;i++){
+    for (j=0;j<7;j++){
+      check[i][j]=0
+    }
+  }
+	var xy=new Array(7);
+	for (i=0;i<7;i++){
+    xy[i]= new Array(7);
+  }
+	for (i=1;i<=5;i++){
+    for (j=1;j<=5;j++){
+      xy[i][j]=-1
+    }
+  }
+	for (i=2;i<=4;i++){
+    for (j=2;j<=4;j++){
+      xy[i][j]=1
+    }
+  }
+
+ function update_check_mini(){
+	 for(i=1;i<=5;i++){
+		 for(j=1;j<=5;j++){
+			 //document.getElementById("check+i+j").innerHTML = check[i][j];
+			 document.getElementById("check"+i+j).innerHTML = check[i][j];
+		 }
+	 }
+
+ }
+  function check_bingo(){
+    for(i=1;i<=5;i++){ /*가로*/
+      cnt=0
+      for(j=1;j<=5;j++){
+        if (check[i][j]>=1){
+          cnt+=1}
+      }
+      if (cnt==5){
+        for(j=1;j<=5;j++){
+          document.images["table" + i + j].src = 'red.png';
+					if (check[i][j]!=3){
+						check[i][j]=2
+					}
+        }
+      }
+    }
+    for(i=1;i<=5;i++){ /*세로*/
+      cnt=0
+      for(j=1;j<=5;j++){
+        if (check[j][i]>=1){
+          cnt+=1}
+      }
+      if (cnt==5){
+        for(j=1;j<=5;j++){
+          document.images["table" + j + i].src = 'red.png';
+					if (check[j][i]!=3){
+						check[j][i]=2
+					}
+        }
+      }
+    }
+		//대각
+		if (check[1][1]>=1 && check[2][2]>=1 && check[3][3]>=1 && check[4][4]>=1 && check[5][5]>=1){
+			for(i=1;i<=5;i++){
+				j=i
+				document.images["table" + i + j].src = 'red.png';
+				if (check[i][j]!=3){
+					check[i][j]=2
+				}
+			}
+		}
+		if (check[1][5]>=1 && check[2][4]>=1 && check[3][3]>=1 && check[4][2]>=1 && check[5][1]>=1){
+			for(i=1;i<=5;i++){
+				j=6-i
+				document.images["table" + i + j].src = 'red.png';
+				if (check[i][j]!=3){
+					check[i][j]=2
+				}
+			}
+		}
+
+  }
+
+	function check_third_bingo(){
+		flag=0
+		if ((count-1)%3==0){
+
+			for(i=1;i<=5;i++){
+				for(j=1;j<=5;j++){
+					if (check[i][j]==2){
+						flag=1
+					}
+				}
+			}
+
+			if (flag==0){
+				document.getElementById("count").style.color = 'red'
+				document.getElementById("count").innerHTML = 'GAMEOVER';
+				end=1
+			}
+		}
+
+	}
+
+	function check_value_update(){
+		for(i=1;i<=5;i++){
+      cnt=0
+      for(j=1;j<=5;j++){
+        if (check[i][j]>=2){
+          cnt+=1}
+      }
+      if (cnt==5){
+        for(j=1;j<=5;j++){
+          check[i][j]=3
+        }
+      }
+    }
+    for(i=1;i<=5;i++){
+      cnt=0
+      for(j=1;j<=5;j++){
+        if (check[j][i]>=2){
+          cnt+=1}
+      }
+      if (cnt==5){
+        for(j=1;j<=5;j++){
+          check[j][i]=3
+        }
+      }
+    }
+		//대각
+		if (check[1][1]>=2 && check[2][2]>=2 && check[3][3]>=2 && check[4][4]>=2 && check[5][5]>=2){
+			for(i=1;i<=5;i++){
+				j=i
+					check[i][j]=3
+			}
+		}
+		if (check[1][5]>=2 && check[2][4]>=2 && check[3][3]>=2 && check[4][2]>=2 && check[5][1]>=2){
+			for(i=1;i<=5;i++){
+				j=6-i
+					check[i][j]=3
+			}
+		}
+
+	}
+
+
+  function show(i,j) {
+		if(end!=1){
+    count=count+1
+    if (count%3==0){
+      document.getElementById("count").style.color = 'blue'
+    }
+		else {
+			document.getElementById("count").style.color = 'black'
+		}
+    document.getElementById("count").innerHTML = count+'번째 폭탄';
+
+    x0=i
+    y0=j
+    x1=i-1
+    y1=j
+    x2=i
+    y2=j+1
+    x3=i+1
+    y3=j
+    x4=i
+    y4=j-1
+    if (check[x0][y0]==0){
+      document.images["table" + x0 + y0].src = 'yes.png';
+      check[x0][y0]=1}
+    else if (check[x0][y0]==1){
+      document.images["table" + x0 + y0].src = 'no.png';
+      check[x0][y0]=0}
+    if (check[x1][y1]==0){
+      document.images["table" + x1 + y1].src = 'yes.png';
+      check[x1][y1]=1}
+    else if (check[x1][y1]==1){
+      document.images["table" + x1 + y1].src = 'no.png';
+      check[x1][y1]=0}
+    if (check[x2][y2]==0){
+      document.images["table" + x2 + y2].src = 'yes.png';
+      check[x2][y2]=1}
+    else if (check[x2][y2]==1){
+      document.images["table" + x2 + y2].src = 'no.png';
+      check[x2][y2]=0}
+    if (check[x3][y3]==0){
+      document.images["table" + x3 + y3].src = 'yes.png';
+      check[x3][y3]=1}
+    else if (check[x3][y3]==1){
+      document.images["table" + x3 + y3].src = 'no.png';
+      check[x3][y3]=0}
+    if (check[x4][y4]==0){
+      document.images["table" + x4 + y4].src = 'yes.png';
+      check[x4][y4]=1}
+    else if (check[x4][y4]==1){
+      document.images["table" + x4 + y4].src = 'no.png';
+      check[x4][y4]=0}
+
+		//한줄 빙고 만들기
+    check_bingo();
+		//if 3배수 폭탄이면 2인거 찾는다
+		check_third_bingo();
+		//폭탄 값 3으로 만들기
+		check_value_update();
+		//미니 테이블 업데이트
+		update_check_mini();
+}
+  }
+  var generateRandom = function (min, max) { //랜덤숫자 만드는 함수
+    var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
+    return ranNum;
+  }
+
+	function xy(){
+		var x;
+		var y;
+	}
+
+  function game_start(){
+    $("#start").hide();
+    $("#table").show();
+		$("#count_section").show();
+
+		xx1=document.getElementById("s_x1").value;
+		yy1=document.getElementById("s_y1").value;
+		xx2=document.getElementById("s_x2").value;
+		yy2=document.getElementById("s_y2").value;
+
+
+    document.images["table" + xx1 + yy1].src = 'yes.png';
+    check[xx1][yy1]=1
+    document.images["table" + xx2 + yy2].src = 'yes.png';
+    check[xx2][yy2]=1
+
+  }
+
+</script>
+<body>
+  <div id='table' class='tb' style="display:none">
+  <table border>
+    <tr>
+      <td><img name="table00" onclick="show(0,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table01" onclick="show(0,1)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table02" onclick="show(0,2)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table03" onclick="show(0,3)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table04" onclick="show(0,4)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table05" onclick="show(0,5)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table06" onclick="show(0,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    <tr>
+      <td><img name="table10" onclick="show(1,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table11" onclick="show(1,1)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table12" onclick="show(1,2)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table13" onclick="show(1,3)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table14" onclick="show(1,4)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table15" onclick="show(1,5)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table16" onclick="show(1,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    <tr>
+      <td><img name="table20" onclick="show(2,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table21" onclick="show(2,1)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table22" onclick="show(2,2)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table23" onclick="show(2,3)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table24" onclick="show(2,4)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table25" onclick="show(2,5)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table26" onclick="show(2,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    <tr>
+      <td><img name="table30" onclick="show(3,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table31" onclick="show(3,1)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table32" onclick="show(3,2)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table33" onclick="show(3,3)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table34" onclick="show(3,4)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table35" onclick="show(3,5)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table36" onclick="show(3,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    <tr>
+      <td><img name="table40" onclick="show(4,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table41" onclick="show(4,1)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table42" onclick="show(4,2)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table43" onclick="show(4,3)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table44" onclick="show(4,4)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table45" onclick="show(4,5)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table46" onclick="show(4,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    <tr>
+      <td><img name="table50" onclick="show(5,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table51" onclick="show(5,1)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table52" onclick="show(5,2)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table53" onclick="show(5,3)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table54" onclick="show(5,4)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table55" onclick="show(5,5)" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table56" onclick="show(5,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    <tr>
+      <td><img name="table60" onclick="show(6,0)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table61" onclick="show(6,1)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table62" onclick="show(6,2)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table63" onclick="show(6,3)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table64" onclick="show(6,4)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table65" onclick="show(6,5)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+      <td><img name="table66" onclick="show(6,6)" style="display:none" style="cursor:pointer" src='no.png' width=100 height=100></td>
+    </tr>
+    </table>
+
+		<table style="display:none">
+			<tr>
+				<td id='check11'>test</td>
+				<td id='check12'>test</td>
+				<td id='check13'>test</td>
+				<td id='check14'>test</td>
+				<td id='check15'>test</td>
+			</tr>
+			<tr>
+				<td id='check21'>test</td>
+				<td id='check22'>test</td>
+				<td id='check23'>test</td>
+				<td id='check24'>test</td>
+				<td id='check25'>test</td>
+			</tr>
+			<tr>
+				<td id='check31'>test</td>
+				<td id='check32'>test</td>
+				<td id='check33'>test</td>
+				<td id='check34'>test</td>
+				<td id='check35'>test</td>
+			</tr>
+			<tr>
+				<td id='check41'>test</td>
+				<td id='check42'>test</td>
+				<td id='check43'>test</td>
+				<td id='check44'>test</td>
+				<td id='check45'>test</td>
+			</tr>
+			<tr>
+				<td id='check51'>test</td>
+				<td id='check52'>test</td>
+				<td id='check53'>test</td>
+				<td id='check54'>test</td>
+				<td id='check55'>test</td>
+			</tr>
+		</table>
+
+
+    </div>
+		<div id=count_section class=cs style="display:none">
+    <h1 id="count" style="color:black" > 1번째 폭탄 </h1>
+		</div>
+		<div id=start class=st>
+      <img id="start1" width="100" height="100" src="start1.png" style="cursor:pointer" onclick="game_start()">
+	<br><br><p><a href="http://www.inven.co.kr/board/lostark/4821/77218">버전 참고 - click </a></p>
+			<form name=f>
+			해골1 x좌표 <input id="s_x1" type="text"><br>
+			해골1 y좌표 <input id="s_y1" type="text"><br>
+			해골2 x좌표 <input id="s_x2" type="text"><br>
+			해골2 y좌표 <input id="s_y2" type="text"><br>
+			</form>
+			<img id='xyxy' width="700" height="700" src="xy.png">
+		</div>
+
+</body>
+</html>
